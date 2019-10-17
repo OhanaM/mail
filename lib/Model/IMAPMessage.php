@@ -48,6 +48,7 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\Files\File;
 use OCP\Files\SimpleFS\ISimpleFile;
 use function base64_encode;
+use function explode;
 use function in_array;
 use function mb_convert_encoding;
 
@@ -242,6 +243,14 @@ class IMAPMessage implements IMessage, JsonSerializable {
 	 */
 	public function getMessageId(): string {
 		return $this->getEnvelope()->message_id;
+	}
+
+	public function getParentMessageId(): ?string {
+		$inReplyTo = $this->getEnvelope()->in_reply_to;
+		// The value *could* be more than one message ID, so we split and take
+		// the first entry.
+		$split = explode(' ', $inReplyTo);
+		return $split[0] ?? null;
 	}
 
 	/**
@@ -630,6 +639,7 @@ class IMAPMessage implements IMessage, JsonSerializable {
 
 		$msg->setUid($this->getUid());
 		$msg->setMessageId($this->getMessageId());
+		$msg->setParentMessageId($this->getParentMessageId());
 		$msg->setMailboxId($mailboxId);
 		$msg->setFrom($this->getFrom());
 		$msg->setTo($this->getTo());

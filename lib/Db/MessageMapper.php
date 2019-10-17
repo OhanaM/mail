@@ -93,6 +93,7 @@ class MessageMapper extends QBMapper {
 		$qb1->insert($this->getTableName());
 		$qb1->setValue('uid', $qb1->createParameter('uid'));
 		$qb1->setValue('message_id', $qb1->createParameter('message_id'));
+		$qb1->setValue('parent_message_id', $qb1->createParameter('parent_message_id'));
 		$qb1->setValue('mailbox_id', $qb1->createParameter('mailbox_id'));
 		$qb1->setValue('subject', $qb1->createParameter('subject'));
 		$qb1->setValue('sent_at', $qb1->createParameter('sent_at'));
@@ -116,6 +117,8 @@ class MessageMapper extends QBMapper {
 		foreach ($messages as $message) {
 			$qb1->setParameter('uid', $message->getUid(), IQueryBuilder::PARAM_INT);
 			$qb1->setParameter('message_id', $message->getMessageId(), IQueryBuilder::PARAM_STR);
+			$parentMessageId = $message->getParentMessageId();
+			$qb1->setParameter('parent_message_id', $parentMessageId, $parentMessageId === null ? IQueryBuilder::PARAM_NULL : IQueryBuilder::PARAM_STR);
 			$qb1->setParameter('mailbox_id', $message->getMailboxId(), IQueryBuilder::PARAM_INT);
 			$qb1->setParameter('subject', $message->getSubject(), IQueryBuilder::PARAM_STR);
 			$qb1->setParameter('sent_at', $message->getSentAt(), IQueryBuilder::PARAM_INT);

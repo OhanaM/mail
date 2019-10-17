@@ -33,8 +33,8 @@ use function in_array;
 /**
  * @method void setUid(int $uid)
  * @method int getUid()
- * @method void setMessageId(string $id)
  * @method string getMessageId()
+ * @method string getParentMessageId()
  * @method void setMailboxId(int $mailbox)
  * @method int getMailboxId()
  * @method void setSubject(string $subject)
@@ -83,6 +83,7 @@ class Message extends Entity implements JsonSerializable {
 
 	protected $uid;
 	protected $messageId;
+	protected $parentMessageId;
 	protected $mailboxId;
 	protected $subject;
 	protected $sentAt;
@@ -132,6 +133,22 @@ class Message extends Entity implements JsonSerializable {
 		$this->addType('flagAttachments', 'bool');
 		$this->addType('flagImportant', 'bool');
 		$this->addType('updatedAt', 'integer');
+	}
+
+	public function setMessageId(?string $id): void {
+		if (empty($id)) {
+			parent::setter('messageId', [null]);
+			return;
+		}
+		parent::setter('messageId', [$id]);
+	}
+
+	public function setParentMessageId(?string $id): void {
+		if (empty($id)) {
+			parent::setter('parentMessageId', [null]);
+			return;
+		}
+		parent::setter('parentMessageId', [$id]);
 	}
 
 	/**
