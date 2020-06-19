@@ -50,7 +50,12 @@ import {
 	update as updateAccount,
 	updateSignature,
 } from '../service/AccountService'
-import {create as createFolder, fetchAll as fetchAllFolders, markFolderRead} from '../service/FolderService'
+import {
+	create as createFolder,
+	fetchAll as fetchAllFolders,
+	markFolderRead,
+	deleteFolder,
+} from '../service/FolderService'
 import {
 	deleteMessage,
 	fetchEnvelope,
@@ -143,6 +148,12 @@ export default {
 	deleteAccount({commit}, account) {
 		return deleteAccount(account.id).catch((err) => {
 			console.error('could not delete account', err)
+			throw err
+		})
+	},
+	deleteFolder({commit}, folder) {
+		return deleteAccount(folder.id).catch((err) => {
+			console.error('could not delete folder', err)
 			throw err
 		})
 	},

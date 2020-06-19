@@ -142,6 +142,9 @@ export default {
 			folderStats: undefined,
 			loadingMarkAsRead: false,
 			clearingCache: false,
+			loading: {
+				delete: false,
+			},
 		}
 	},
 	computed: {
@@ -290,14 +293,19 @@ export default {
 		},
 		deleteFolder() {
 			const id = this.folder.id
+			logger.info('delete folder', {folder: this.folder})
 			OC.dialogs.confirmDestructive(
-				t('mail', 'Are you sure you want to delete this folder?', {
-					folderId: this.folderId
-				}),
-				t('mail', 'Folder deletion'),
+				t(
+					'mail',
+					'Are you sure you want to delete this folder? The folder and all messages in it will be deleted.',
+					{
+						folderId: this.folderId,
+					}
+				),
+				t('mail', 'Delete folder'),
 				{
 					type: OC.dialogs.YES_NO_BUTTONS,
-					confirm: t('mail', 'Delete folder', {folderId: this.folderId }),
+					confirm: t('mail', 'Delete folder', {folderId: this.folderId}),
 					confirmClasses: 'error',
 					cancel: t('mail', 'Cancel'),
 				},
@@ -309,11 +317,12 @@ export default {
 							.then(() => {
 								logger.info(`folder ${id} deleted`)
 							})
-							.catch(error => logger.error('could not delete folder', { error }))
+							.catch((error) => logger.error('could not delete folder', {error}))
 					}
-			})
-		}
-
+					this.loading.delete = false
+				}
+			)
+		},
 	},
 }
 </script>
