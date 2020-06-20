@@ -134,4 +134,12 @@ interface IMailManager {
 	 * @return Quota|null
 	 */
 	public function getQuota(Account $account): ?Quota;
+
+	/**
+	 * @param Account $account
+	 * @param string $folderId
+	 *
+	 * @throws ServiceException
+	 */
+	public function deleteMailbox(Account $account, string $folderId): void;
 }

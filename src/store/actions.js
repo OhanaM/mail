@@ -151,11 +151,9 @@ export default {
 			throw err
 		})
 	},
-	deleteFolder({commit}, folder) {
-		return deleteAccount(folder.id).catch((err) => {
-			console.error('could not delete folder', err)
-			throw err
-		})
+	async deleteFolder({commit}, {account, folder}) {
+		await deleteFolder(account.id, folder.id)
+		commit('removeFolder', {account, folder})
 	},
 	createFolder({commit}, {account, name}) {
 		return createFolder(account.id, name).then((folder) => {

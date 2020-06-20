@@ -61,7 +61,7 @@
 				</ActionInput>
 
 				<ActionButton
-					v-if="!account.isUnified && folder.specialRole !== 'flagged'"
+					v-if="!account.isUnified && !folder.specialRole"
 					icon="icon-delete"
 					@click="deleteFolder"
 				>
@@ -313,7 +313,7 @@ export default {
 					if (result) {
 						this.loading.delete = true
 						return this.$store
-							.dispatch('deleteFolder', this.folder)
+							.dispatch('deleteFolder', {account: this.account, folder: this.folder})
 							.then(() => {
 								logger.info(`folder ${id} deleted`)
 							})
